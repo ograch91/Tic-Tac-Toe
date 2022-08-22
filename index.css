@@ -1,0 +1,100 @@
+:root {
+  --square-size: 200px;
+  /* --player-size: 90px; */
+  --player-size: calc(var(--square-size) * 2 / 3);
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+  box-sizing: border-box;
+  display: flex;
+  height: 95vh;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.game {
+  display: flex;
+  justify-content: center;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  width: calc(var(--squrae-size) * 3);
+  height: calc(var(--squrae-size) * 3);
+  cursor: pointer;
+}
+
+.board > .row {
+  display: flex;
+  flex-direction: row;
+}
+
+.square {
+  display: flex;
+  width: var(--square-size);
+  height: var(--square-size);
+  align-items: center;
+  justify-content: center;
+  border-color: white;
+  border-width: 5px;
+}
+
+.square .x {
+  position: relative;
+}
+.square.left {
+  border-right-style: solid;
+  clear: both;
+}
+.square.right {
+  border-left-style: solid;
+  clear: both;
+}
+.square.top {
+  border-bottom-style: solid;
+  clear: both;
+}
+.square.bottom {
+  border-top-style: solid;
+  clear: both;
+}
+
+.o {
+  width: var(--player-size);
+  height: var(--player-size);
+  border-radius: 50%;
+  border: 20px solid aquamarine;
+}
+
+.x:before,
+.x:after {
+  content: '';
+  position: absolute;
+  top: 0;
+
+  /* border: solid red 20px; */
+  border-radius: 4px;
+  background-color: aquamarine;
+  width: 20px;
+  height: 160px;
+  display: block;
+  top: -80px;
+  right: -15px;
+}
+
+.x:before {
+  transform: rotate(-45deg);
+}
+.x:after {
+  transform: rotate(45deg);
+}
