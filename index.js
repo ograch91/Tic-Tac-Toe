@@ -41,46 +41,6 @@ const generateSquare = (i, j) => {
   return squareDiv;
 };
 
-const playTurn = (player, squareNum) => {
-  const play = document.createElement('div');
-  play.classList.add(player);
-  const square = squaresArr[squareNum];
-  square.append(play);
-  moves[squareNum] = player;
-};
-
-let moves = [];
-let winner;
-
-const handleClickPlay = e => {
-  if (winner) {
-    clearBoard();
-    return;
-  }
-
-  const square = e.currentTarget;
-  const userPlay = square.id.at(1);
-  console.log(square);
-  if (moves[userPlay]) {
-    console.log('played');
-    return;
-  }
-  playTurn('x', userPlay);
-  const playerWin = checkIfGameEnd();
-  if (playerWin) {
-    return;
-  }
-
-  const emptys = getEmptySquares();
-  const cpuPlay = getRandomItem(emptys);
-
-  playTurn('o', cpuPlay);
-  const cpuWin = checkIfGameEnd();
-  if (cpuWin) {
-    return;
-  }
-};
-
 const clearBoard = () => {
   squaresArr.forEach(s => {
     s.innerText = '';
@@ -89,51 +49,52 @@ const clearBoard = () => {
   winner = undefined;
 };
 
-
-const getRandomItem = items => {
-  //https://stackoverflow.com/a/5915122/18308054
-  return items[Math.floor(Math.random() * items.length)];
-};
-
-const getEmptySquares = () => {
-  const emptys = [];
-  for (let i = 0; i < 9; i++) {
-    if (!moves[i]) {
-      emptys.push(i);
-    }
-  }
-  return emptys;
-};
-
-const winLines = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
-
-const checkIfGameEnd = () => {
-  for (const line of winLines) {
-    const lineMoves = line.map(squareNum => moves[squareNum]);
-    if (lineMoves.includes(undefined)) continue;
-    if (lineMoves[0] == lineMoves[1] && lineMoves[1] == lineMoves[2]) {
-      winner = lineMoves[0];
-      delayedAlert(`${winner},win`);
-      return winner;
-    }
-  }
-
-  if (moves.filter(i => i).length === 9) {
-    delayedAlert('tie');
-    winner = 'tie';
-    return 'tie';
+const printScoresArr = scoreHistory => {
+  const tabelContainer = document.querySelector('.score-table');
+  for (const scoreObj of scoreHistory) {
+    const scoreRow = generateScoreRow(scoreObj);
+    tabelContainer.append(scoreRow);
   }
 };
 
-const delayedAlert = msg => {
-  setTimeout(() => alert(msg), 1);
+const generateScoreRow = scoreObj => {
+  const row = document.createElement('div');
+  row.classList.add('score-row');
+
+  const playerCol = generateScoreCell('player', '');
+  const tieCol = generateScoreCell('tie', '');
+  const cpuCol = generateScoreCell('cpu', '');
+  const dateCol = generateScoreCell('date', scoreObj.date);
+
+  if (scoreObj.winner == 'x') {
+    playerCol.innerText = 'X';
+  } else if (scoreObj.winner == 'tie') {
+    tieCol.innerText = '*';
+  } else if (scoreObj.winner == 'o') {
+    cpuCol.innerText = 'O';
+  }
+
+  row.append(playerCol, tieCol, cpuCol, dateCol);
+  return row;
 };
+
+const generateScoreCell = (className, text) => {
+  const cell = document.createElement('div');
+  cell.classList.add(className);
+  cell.innerText = text;
+  return cell;
+};
+
+const printAllScores = scoreSums => {
+  document.querySelector('.player-total').innerText = scoreSums.player;
+  document.querySelector('.tie-total').innerText = scoreSums.tie;
+  document.querySelector('.cpu-total').innerText = scoreSums.cpu;
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadLocalHistory();
+  if (!scoreHistory) return;
+  totalScore(scoreHistory);
+  printScoresArr(scoreHistory);
+  printAllScores(scoreSums);
+});

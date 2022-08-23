@@ -13,6 +13,7 @@ body {
   align-items: center;
   flex-direction: row;
   justify-content: space-evenly;
+  font-family: 'Roboto', sans-serif;
 }
 
 *,
@@ -26,6 +27,23 @@ body {
   justify-content: center;
 }
 
+.fa-solid {
+  font-size: 30px;
+  position: absolute;
+  bottom: 50px;
+  cursor: pointer;
+}
+
+.fa-solid:hover {
+  filter: drop-shadow(3px -1px 3px aquamarine);
+  color: lightblue;
+}
+
+.fa-trash-can:hover {
+  filter: drop-shadow(1px -2px 5px aquamarine);
+  color: lightblue;
+}
+
 .board {
   display: flex;
   flex-direction: column;
@@ -36,7 +54,54 @@ body {
 
 .board > .row {
   display: flex;
+
   flex-direction: row;
+}
+
+.player,
+.tie,
+.cpu {
+  border-right: 2px solid;
+  width: 100px;
+}
+
+.scores {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score-header,
+.score-row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.score-total {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.score-header > div,
+.score-row > div,
+.score-total > div {
+  width: 100px;
+  text-align: center;
+  gap: 5px;
+}
+
+.score-table {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+
+  overflow-y: overlay;
+}
+.scores > div {
+  width: 400px;
+  padding-block: 5px;
+  border-bottom: 2px solid;
 }
 
 .square {
@@ -47,6 +112,10 @@ body {
   justify-content: center;
   border-color: white;
   border-width: 5px;
+}
+
+.score-row > div {
+  padding-block: 5px;
 }
 
 .square .x {
@@ -76,6 +145,10 @@ body {
   border: 20px solid aquamarine;
 }
 
+.win {
+  animation: blink 0.3s steps(1) 3;
+}
+
 .x:before,
 .x:after {
   content: '';
@@ -97,4 +170,49 @@ body {
 }
 .x:after {
   transform: rotate(45deg);
+}
+
+/* https://codepen.io/devstreak/pen/dMYgeO */
+.scroll-bar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: transparent;
+
+  border-radius: 3.5px;
+}
+
+.scroll-bar::-webkit-scrollbar {
+  width: 10px;
+  background-color: transparent;
+}
+
+.scroll-bar::-webkit-scrollbar-thumb {
+  border-radius: 3.5px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.44, #7fffd4),
+    color-stop(0.72, #54fbe5),
+    color-stop(0.86, #23dfe7)
+  );
+}
+
+@keyframes border-blink {
+  50% {
+    border-color: #000;
+  }
+}
+@keyframes blink {
+  50% {
+    visibility: hidden;
+  }
+}
+
+@keyframes appear {
+  from {
+    transform: scale(0.3);
+  }
+  to {
+    transform: scale(1);
+  }
 }
